@@ -58,3 +58,32 @@ body{
     background-color: #fff;
     cursor: default;
 }
+
+.menu-icon-bar{
+    display: flex;
+    flex-direction: row;
+    height: 6vh;
+    align-items: center;
+    
+}
+
+.menu-icon{ 
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-icon:hover{
+    background-color: #cdcdcd;
+    cursor: pointer;
+}
+
+.menu-selector{
+    height: 4.5vh;
+    font-size: 1.2rem;
+    width: 10vw;
+    min-width: 130px;
+}
