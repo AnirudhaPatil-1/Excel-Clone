@@ -1,5 +1,6 @@
 body{
     margin:0;
+    /* overflow: hidden; */
 }
 
 *{
@@ -132,7 +133,7 @@ body{
     justify-content: center;
     align-items:center;
     height: 70%;
-    background-color:#F3F2F1;
+    /* background-color:#F3F2F1; */
 }
 
 #formula-input{
@@ -146,5 +147,84 @@ body{
     overflow: hidden;
     background-color: #fff;
 }
+
+.data-container{
+    display: flex;
+    /* height: calc(100vh - 26vh); */
+    height: 76vh;
+    flex-direction: row;
+    /* border: 1px solid; */
+    flex-wrap: wrap;
+    /* overflow: scroll; */
+    width: 100%;
+
+}
+
+#select-all{
+    width: 25px;
+    height:25px;
+    border:1px solid #cdcdcd;
+}
+ 
+#columns{
+    height:25px;
+    width: calc(100vw - 25px);
+    border: 1px solid #cdcdcd;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+#rows{
+    width: 25px;
+    /* height: calc(76vh - 25px - 17px); */
+    height: calc(76vh - 25px);
+    border: 1px solid #cdcdcd;
+    overflow: hidden;
+}
+
+#cells{
+    width: calc(100vw - 25px);
+    height: calc(76vh - 25px);
+    border: 1px solid #cdcdcd;
+}
+
+.column-name{
+    /* width: 60px; */
+    /* height: 100%; */
+    /* border-left: 1px solid #cdcdcd; */
+    border-right: 1px solid #cdcdcd;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600; 
+    min-width: 100px;  
+}
+
+.row-name{
+    min-height: 25px;
+    border-bottom: 1px solid #cdcdcd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;   
+}
+
+.cell-row{
+    display:flex;
+}
+
+.input-cell{
+    min-width: 100px;
+    width: 100px;
+    min-height: 25px;
+    height: 25p x;
+    border-right:1px solid #cdcdcd;
+    border-bottom: 1px solid #cdcdcd;
+}
+
+
+
 
 
