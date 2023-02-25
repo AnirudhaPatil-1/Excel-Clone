@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="./style.css" />
-    
     <title>Excel Clone</title>
   </head>
   <body>
@@ -22,7 +22,8 @@
       <div class="menu-icon-bar">
         <div class="material-icons menu-icon">content_cut</div>
         <div class="material-icons menu-icon">content_copy</div>
-        <div class="material-icons menu-icon">content_paste</div>
+        <d
+        iv class="material-icons menu-icon">content_paste</d>
         <select class="menu-selector" id="font-family">
           <option style="font-family:Noto Sans" value="Noto Sans">Noto Sans</option>
           <option style="font-family:Arial" value="Arial">Arial</option>
@@ -68,8 +69,21 @@
         </div>
         <div id="formula-input" contenteditable="true"></div>
       </div>
-      <div class="data-container"></div>
+      <div class="data-container">
+        <div id="select-all"></div>
+        <div id="columns">
+          <!-- <div class="column-name">A</div> -->
+          <!-- add script for adding columns -->
+        </div>
+        <div id="rows">
+        </div>
+        <div id="cells">
+          <div class="cell-row">
+          </div>
+        </div>
+      </div>
       <div class="sheet-bar"></div>
     </div>
+    <script src="./script.js"></script>
   </body>
 </html>
