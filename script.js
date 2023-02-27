@@ -155,3 +155,13 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell){
     }
     $(ele).addClass("selected");
 }
+
+let startcellSelected = false;
+let startCell = {};
+$(".input-cell").mousemove(function(e){
+    if(e.buttons == 1 && !startcellSelected){
+        let [rowId, colId] = getRowCol(this);
+        startCell = {"rowId": rowId, "colId": colId};
+        startcellSelected = true;
+    }
+})
