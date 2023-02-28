@@ -156,12 +156,38 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell){
     $(ele).addClass("selected");
 }
 
+//mouse move select multiple cells
 let startcellSelected = false;
 let startCell = {};
+let endCell = {};
+let mouseMoved = false;
 $(".input-cell").mousemove(function(e){
-    if(e.buttons == 1 && !startcellSelected){
-        let [rowId, colId] = getRowCol(this);
-        startCell = {"rowId": rowId, "colId": colId};
-        startcellSelected = true;
+    e.preventDefault();
+    //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
+    if(e.button == 1){
+        if(!startcellSelected){
+            let [rowId, colId] = getRowCol(this);
+            startCell = {"rowId": rowId, "colId": colId};
+            startcellSelected = true;
+            mouseMoved = true;
+        }else{
+            let [rowId, colId] = getRolCol(this);
+            endCell = {"rowId": rowId, "colId": colId};
+            selectAllBetweenCells(startCell, endCell);
+        }
+        // console.log(startCell, endCell);
+    }else{
+        startcellSelected = false;
+        mouseMoved = false;
     }
 })
+
+function selectAllBetweenCells(start, end){
+    for(let i = Math.min(start.rowId, end.rowId); i <= Math.max(start.rowId, end.rowId); i++){
+        for(let j = Math.min(start.colId, end.colId); j <= Math.max(start.colId, end.colId); j++){
+            let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(i, j);
+            selectCell($(`#row-${i}-col-${j}`)[0], {"ctrlKey": true}, topCell, bottomCell, leftCell, rightCell);
+        }
+        
+    }
+}
