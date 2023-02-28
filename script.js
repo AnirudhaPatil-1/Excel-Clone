@@ -170,24 +170,32 @@ $(".input-cell").mousemove(function(e){
             startCell = {"rowId": rowId, "colId": colId};
             startcellSelected = true;
             mouseMoved = true;
-        }else{
-            let [rowId, colId] = getRolCol(this);
-            endCell = {"rowId": rowId, "colId": colId};
-            selectAllBetweenCells(startCell, endCell);
         }
+        // else{
+        //     let [rowId, colId] = getRolCol(this);
+        //     endCell = {"rowId": rowId, "colId": colId};
+        //     selectAllBetweenCells(startCell, endCell);
+        // }
         // console.log(startCell, endCell);
     }else{
         startcellSelected = false;
         mouseMoved = false;
     }
-})
+});
+
+$(".input-cell").mouseenter(function(e){
+    if(e.button == 1){
+        let [rowId, colId] = getRowCol(this);
+        endCell = {"rowId": rowId, "colId": colId};
+        selectAllBetweenCells(startCell, endCell);
+    }
+}) 
 
 function selectAllBetweenCells(start, end){
     for(let i = Math.min(start.rowId, end.rowId); i <= Math.max(start.rowId, end.rowId); i++){
         for(let j = Math.min(start.colId, end.colId); j <= Math.max(start.colId, end.colId); j++){
             let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(i, j);
             selectCell($(`#row-${i}-col-${j}`)[0], {"ctrlKey": true}, topCell, bottomCell, leftCell, rightCell);
-        }
-        
+        }    
     }
 }
