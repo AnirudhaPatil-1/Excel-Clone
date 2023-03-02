@@ -182,7 +182,7 @@ $(".input-cell").mousemove(function(e){
         mouseMoved = false;
     }
 });
-
+//mouse move, mouse up, mouse down & mouseenter
 $(".input-cell").mouseenter(function(e){
     if(e.button == 1){
         let [rowId, colId] = getRowCol(this);
