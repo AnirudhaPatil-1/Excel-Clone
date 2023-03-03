@@ -164,7 +164,10 @@ let mouseMoved = false;
 $(".input-cell").mousemove(function(e){
     e.preventDefault();
     //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
-    if(e.button == 1){
+    if(e.buttons == 1){
+        if(e.pageX > ($(window).width() - 100)){
+            $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+        }
         if(!startcellSelected){
             let [rowId, colId] = getRowCol(this);
             startCell = {"rowId": rowId, "colId": colId};
@@ -184,7 +187,7 @@ $(".input-cell").mousemove(function(e){
 });
 //mouse move, mouse up, mouse down & mouseenter
 $(".input-cell").mouseenter(function(e){
-    if(e.button == 1){
+    if(e.buttons == 1){
         let [rowId, colId] = getRowCol(this);
         endCell = {"rowId": rowId, "colId": colId};
         selectAllBetweenCells(startCell, endCell);
