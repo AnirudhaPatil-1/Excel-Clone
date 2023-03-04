@@ -161,12 +161,17 @@ let startcellSelected = false;
 let startCell = {};
 let endCell = {};
 let mouseMoved = false;
+let scrollXRStarted = false;
+let scrollXLStarted = false;
 $(".input-cell").mousemove(function(e){
     e.preventDefault();
     //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
     if(e.buttons == 1){
-        if(e.pageX > ($(window).width() - 100)){
-            $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+        if(e.pageX > ($(window).width() - 100) && !scrollXRStarted){
+            // $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+            scrollXR();
+        }else if(e.pageX < 100 && !scrollXLStarted ){
+            scrollXL();
         }
         if(!startcellSelected){
             let [rowId, colId] = getRowCol(this);
@@ -174,12 +179,6 @@ $(".input-cell").mousemove(function(e){
             startcellSelected = true;
             mouseMoved = true;
         }
-        // else{
-        //     let [rowId, colId] = getRolCol(this);
-        //     endCell = {"rowId": rowId, "colId": colId};
-        //     selectAllBetweenCells(startCell, endCell);
-        // }
-        // console.log(startCell, endCell);
     }else{
         startcellSelected = false;
         mouseMoved = false;
@@ -188,6 +187,15 @@ $(".input-cell").mousemove(function(e){
 //mouse move, mouse up, mouse down & mouseenter
 $(".input-cell").mouseenter(function(e){
     if(e.buttons == 1){
+        if(e.pageX < ($(windows).width() - 100) && scrollXRStarted){
+            clearInterval(scrollXRInterval);
+            scrollXRStarted = false;
+        }
+
+        if(e.pageX > 100 && scrollXLstarted){
+            clearInterval(scrollXLInterval);
+            scrollXLStarted = false;
+        }
         let [rowId, colId] = getRowCol(this);
         endCell = {"rowId": rowId, "colId": colId};
         selectAllBetweenCells(startCell, endCell);
@@ -202,3 +210,26 @@ function selectAllBetweenCells(start, end){
         }    
     }
 }
+
+let scrollXRInterval;
+let scrollXLInterval;
+function scrollXR(){
+    scrollXRStarted = true;
+    let scrollXRInterval = setInterval(() => {
+        $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+    }, 100);  
+}
+
+function scrollXL(){
+    scrollXLStarted = true;
+    let scrollXLInterval = setInterval(() => {
+        $("#cells").scrollLeft($("#cells").scrollLeft() - 100);
+    }, 100)
+}
+
+$(".input-cell").mouseup(function(e){
+    clearInterval(scrollXRInterval);
+    scrollXRStarted = false;
+    clearInterval(scrollXLInterval);
+    scrollXLStarted = false;
+});
