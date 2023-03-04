@@ -167,10 +167,10 @@ $(".input-cell").mousemove(function(e){
     e.preventDefault();
     //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
     if(e.buttons == 1){
-        if(e.pageX > ($(window).width() - 100) && !scrollXRStarted){
+        if(e.pageX > ($(window).width() - 10) && !scrollXRStarted){
             // $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
             scrollXR();
-        }else if(e.pageX < 100 && !scrollXLStarted ){
+        }else if(e.pageX < 10 && !scrollXLStarted ){
             scrollXL();
         }
         if(!startcellSelected){
@@ -187,12 +187,12 @@ $(".input-cell").mousemove(function(e){
 //mouse move, mouse up, mouse down & mouseenter
 $(".input-cell").mouseenter(function(e){
     if(e.buttons == 1){
-        if(e.pageX < ($(windows).width() - 100) && scrollXRStarted){
+        if(e.pageX < ($(windows).width() - 10) && scrollXRStarted){
             clearInterval(scrollXRInterval);
             scrollXRStarted = false;
         }
 
-        if(e.pageX > 100 && scrollXLstarted){
+        if(e.pageX > 10 && scrollXLstarted){
             clearInterval(scrollXLInterval);
             scrollXLStarted = false;
         }
@@ -227,9 +227,21 @@ function scrollXL(){
     }, 100)
 }
 
-$(".input-cell").mouseup(function(e){
+$(".data-container").mousemove(function(e){
+    e.preventDefault();
+    if(e.buttons == 1){
+        if(e.pageX > ($(window).width() - 10) && !scrollXRStarted){
+            // $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+            scrollXR();
+        }else if(e.pageX < (10) && !scrollXLStarted ){
+            scrollXL();
+        }
+    }
+})
+
+$(".data-container").mouseup(function(e){
     clearInterval(scrollXRInterval);
-    scrollXRStarted = false;
     clearInterval(scrollXLInterval);
+    scrollXRStarted = false;
     scrollXLStarted = false;
 });
