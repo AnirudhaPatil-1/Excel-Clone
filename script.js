@@ -26,9 +26,10 @@ let cellData = [];
 
 for(let i = 1; i <= 100; i++){
     let row = $(`<div class="cell-row"></div>`);
+    let rowArray = [];
     for(let j = 1; j <= 100; j++){
         row.append(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false"></div>`);
-        cellData.push({
+        rowArray.push({
             "font-family": "Noto Sans",
             "font-size": 14,
             "text": "",
@@ -40,6 +41,7 @@ for(let i = 1; i <= 100; i++){
             "bgcolor": "" 
         })
     }
+    cellData.push(rowArray);
     $("#cells").append(row);
 }
 
@@ -55,6 +57,7 @@ $("#cells").scroll(function(e){
 
 $(".input-cell").dblclick(function(e){
     $(".input-cell.selected").removeClass("selected top-selected bottom-selected left-selected right-selected");
+    $(this).addClass("selected");
     $(this).attr("contenteditable", "true");
     $(this).focus();
 });
@@ -166,9 +169,17 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell){
         $(".input-cell.selected").removeClass("selected top-selected bottom-selected left-selected right-selected");
     }
     $(ele).addClass("selected");
+    changeHeader(getRowCol(ele));
+}
+
+function changeHeader([rowId, colId]){
+    let data = cellData[rowId - 1][colId - 1];
+    $(".alignment.selected").removeClass("selected");
+    $(`.alignment[data-type=${data.alignment}]`).addClass("selected");
 }
 
 //mouse move select multiple cells
+let count = 0;
 let startcellSelected = false;
 let startCell = {};
 let endCell = {};
