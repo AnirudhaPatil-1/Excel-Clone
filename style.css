@@ -257,6 +257,10 @@ body{
     border-right: 1px solid #cdcdcd;
 }
 
+.menu-icon.selected{
+    background-color: #cdcdcd;
+}
+
 
 
 

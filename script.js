@@ -22,11 +22,23 @@ for(let i = 1; i <= 100; i++){
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
 
+let cellData = [];
 
 for(let i = 1; i <= 100; i++){
     let row = $(`<div class="cell-row"></div>`);
     for(let j = 1; j <= 100; j++){
         row.append(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false"></div>`);
+        cellData.push({
+            "font-family": "Noto Sans",
+            "font-size": 14,
+            "text": "",
+            "bold": false,
+            "italic": false,
+            "underlined": false,
+            "alignment": "left",
+            "color": "",
+            "bgcolor": "" 
+        })
     }
     $("#cells").append(row);
 }
@@ -245,3 +257,14 @@ $(".data-container").mouseup(function(e){
     scrollXRStarted = false;
     scrollXLStarted = false;
 });
+
+$(".alignment").click(function(e){
+    let alignment = $(this).attr("data-type");
+    $(".alignment.selected").removeClass("selected");
+    $(this).addClass("selected");
+    $(".input-cell.selected").css("text-align", alignment);
+    $(".input-cell.selected").each(function(index, data){
+        let [rowId, colId] = getRowCol(data);
+        cellData[rowId - 1][colId - 1].alignment = alignment;
+    })
+})
