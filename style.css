@@ -200,7 +200,7 @@ body{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-weight: 600; 
+    font-weight: bold; 
     min-width: 100px;  
     width: 100px;
 }
@@ -211,7 +211,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: 600;   
+    font-weight: bold;   
 }
 
 .cell-row{
