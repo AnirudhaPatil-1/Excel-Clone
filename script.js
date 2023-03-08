@@ -280,13 +280,21 @@ $(".alignment").click(function(e){
     })
 })
 
+
 $("#bold").click(function(e){
     if($(this).hasClass("selected")){
         $(this).removeClass("selected");
         $(".input-cell.selected").css("font-weight","");
+        $(".input-cell.selected").each(function(index, data){
+            let [rowId, colId] = getRowCol(data);
+            cellData[rowId - 1][colId - 1].bold = false;
+        });
     }else{
         $(this).addClass("selected");
         $(".input-cell.selected").css("font-weight", "bold");
+        $(".input-cell.selected").each(function(index, data){
+            let [rowId, colId] = getRowCol(data);
+            cellData[rowId -1 ][colId - 1].bold = true;
+        });
     }
-
 })
