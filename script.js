@@ -176,6 +176,17 @@ function changeHeader([rowId, colId]) {
     let data = cellData[rowId - 1][colId - 1];
     $(".alignment.selected").removeClass("selected");
     $(`.alignment[data-type=${data.alignment}]`).addClass("selected");
+    addRemoveSelectFromFontStyle(data, "bold");
+    addRemoveSelectFromFontStyle(data, "italic");
+    addRemoveSelectFromFontStyle(data, "underlined");
+}
+
+function addRemoveSelectFromFontStyle(data, property){
+    if(data[property]){
+        $(`#${property}`).addClass("selected");
+    }else{
+        $(`#${property}`).removeClass("selected");
+    }
 }
 
 //mouse move select multiple cells
