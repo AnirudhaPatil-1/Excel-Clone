@@ -360,6 +360,7 @@ $("#text-color").click(function(e){
 
 $(".sheet-tab").bind("contextmenu", function(e){
     e.preventDefault();
+    selectSheet(this);
     $(".sheet-options-modal").remove();
     let modal = (`<div class="sheet-options-modal">
                     <div class="option option-1">Rename</div>
@@ -368,6 +369,11 @@ $(".sheet-tab").bind("contextmenu", function(e){
     $(".container").append(modal);
     $(".sheet-options-modal").css({"bottom": 0.04 * $(window).height(), "left": e.pageX});  
 });
+
+function selectSheet(ele){
+    $(".sheet-tab.selected").removeClass("selected");
+    $(ele).addClass("selected");
+}
 
 $(".container").click(function(e){
     $(".sheet-options-modal").remove();
