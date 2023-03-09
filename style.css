@@ -372,6 +372,93 @@ body{
     background-color: #cdcdcd;
 }
 
+.sheet-modal-parent{
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.sheet-rename-modal{
+    position: absolute;
+    /* top: 300px;
+    left: 300px; */
+    /* border: 1px solid black; */
+    background-color: #fff;
+    box-shadow: rgb(0 0 0 / 22%) 0px 25.6px 57.6px 0px, rgb(0 0 0 / 18%) 0px 4.8px 14.4px 0px;
+    padding: 15px;
+    min-width: 288px;
+    width: 450px;
+    border-radius: 2px;
+}
+
+.sheet-modal-title{
+    /* padding:20px; */
+    text-align: left;
+    color: #207345;
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+.sheet-modal-input-container{
+    padding: 20px;
+}
+
+.sheet-modal-input-title{
+    display: block;
+    margin-bottom: 10px;
+}
+
+.sheet-modal-input{
+width: 100%;
+height: 2rem;
+font-size: 1.2rem;
+outline-color: #207345;
+}
+
+.sheet-modal-confirmation{
+    display: flex;
+    /* justify-content: center; */
+    justify-content:flex-end;
+    align-items: center;
+}
+
+.button{
+    border: 1px solid;
+    width: 80px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    /* border: 1px solid transparent; */
+    border-radius: 2px;
+    margin-right: 20px;
+    
+}
+
+.ok-button{
+    background-color: #207345;
+    color: #fff;
+    border: 1px solid transparent; 
+}
+
+.ok-button:hover{
+    background-color: #1a6039;
+    cursor: pointer;
+}
+
+.cancel-button:hover{
+    background-color: #f6f2f2;
+    cursor: pointer;
+
+}
 
 
 
