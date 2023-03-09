@@ -22,7 +22,9 @@ for (let i = 1; i <= 100; i++) {
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
 
-let cellData = [];
+let cellData = {"Sheet1": []};
+let totalSheets = 1;
+let selectedSheet = "Sheet1";
 
 for (let i = 1; i <= 100; i++) {
     let row = $(`<div class="cell-row"></div>`);
@@ -41,7 +43,7 @@ for (let i = 1; i <= 100; i++) {
             "bgcolor": ""
         })
     }
-    cellData.push(rowArray);
+    cellData[selectedSheet].push(rowArray);
     $("#cells").append(row);
 }
 
@@ -173,7 +175,7 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
 }
 
 function changeHeader([rowId, colId]) {
-    let data = cellData[rowId - 1][colId - 1];
+    let data = cellData[selectedSheet][rowId - 1][colId - 1];
     $(".alignment.selected").removeClass("selected");
     $(`.alignment[data-type=${data.alignment}]`).addClass("selected");
     addRemoveSelectFromFontStyle(data, "bold");
@@ -287,7 +289,7 @@ $(".alignment").click(function (e) {
     $(".input-cell.selected").css("text-align", alignment);
     $(".input-cell.selected").each(function (index, data) {
         let [rowId, colId] = getRowCol(data);
-        cellData[rowId - 1][colId - 1].alignment = alignment;
+        cellData[selectedSheet][rowId - 1][colId - 1].alignment = alignment;
     })
 })
 
@@ -310,14 +312,14 @@ function setStyle(ele, property, key, value){
         $(".input-cell.selected").css(key, "");
         $("input-cell.selected").each(function(index, data){
             let [rowId, colId] = getRowCol(data);
-            cellData[rowId - 1][colId - 1][property] = false;
+            cellData[selectedSheet][rowId - 1][colId - 1][property] = false;
         })
     }else{
         $(ele).addClass("selected");
         $(".input-cell.selected").css(key, value);
         $(".input-cell.selected").each(function(index, data){
             let [rowId, colId] = getRowCol(data);
-            cellData[rowId - 1][colId - 1][property] = true;
+            cellData[selectedSheet][rowId - 1][colId - 1][property] = true;
         });
     }
 }
@@ -374,15 +376,20 @@ $(".sheet-tab").bind("contextmenu", function(e){
     })
 });
 
-function selectSheet(ele){
-    $(".sheet-tab.selected").removeClass("selected");
-    $(ele).addClass("selected");
-}
 
 $(".container").click(function(e){
     $(".sheet-options-modal").remove();
 })
 
-$(".sheet-tab").blur(function(e){
-    $(".sheet-tab").attr("contenteditable", "false");
-})
+// $(".sheet-tab").blur(function(e){
+//     $(".sheet-tab").attr("contenteditable", "false");
+// })
+
+$(".sheet-tab").click(function(e){
+    selectSheet(this);
+});
+
+function selectSheet(ele){
+    $(".sheet-tab.selected").removeClass("selected");
+    $(ele).addClass("selected");
+};
