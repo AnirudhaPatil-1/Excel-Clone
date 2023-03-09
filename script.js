@@ -357,3 +357,18 @@ $("#text-color").click(function(e){
         $(this).parent().click();
     }, 10)
 })
+
+$(".sheet-tab").bind("contextmenu", function(e){
+    e.preventDefault();
+    $(".sheet-options-modal").remove();
+    let modal = (`<div class="sheet-options-modal">
+                    <div class="option option-1">Rename</div>
+                    <div class="option option-2">Delete</div>
+                </div>`);
+    $(".container").append(modal);
+    $(".sheet-options-modal").css({"bottom": 0.04 * $(window).height(), "left": e.pageX});  
+});
+
+$(".container").click(function(e){
+    $(".sheet-options-modal").remove();
+})
