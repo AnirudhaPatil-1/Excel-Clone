@@ -363,11 +363,15 @@ $(".sheet-tab").bind("contextmenu", function(e){
     selectSheet(this);
     $(".sheet-options-modal").remove();
     let modal = (`<div class="sheet-options-modal">
-                    <div class="option option-1">Rename</div>
-                    <div class="option option-2">Delete</div>
+                    <div class="option sheet-rename">Rename</div>
+                    <div class="option sheet-delete">Delete</div>
                 </div>`);
     $(".container").append(modal);
     $(".sheet-options-modal").css({"bottom": 0.04 * $(window).height(), "left": e.pageX});  
+    $(".sheet-rename").click(function(e){
+        $(".sheet-tab.selected").attr("contenteditable", "true");
+        $(".sheet-tab.selected").focus();
+    })
 });
 
 function selectSheet(ele){
@@ -377,4 +381,8 @@ function selectSheet(ele){
 
 $(".container").click(function(e){
     $(".sheet-options-modal").remove();
+})
+
+$(".sheet-tab").blur(function(e){
+    $(".sheet-tab").attr("contenteditable", "false");
 })

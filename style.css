@@ -318,11 +318,7 @@ body{
     padding-left: 10px;
     padding-right: 10px;
     border-right: 0.5px solid #cdcdcd;
-}
-
-.sheet-tab.selected{
-    color: #207345;
-    border-bottom: 5px solid #207345;
+    font-weight: bold;
 }
 
 .add-sheet{
@@ -332,6 +328,13 @@ body{
 .sheet-tab:hover{
     background-color: #cdcdcd;
     cursor: pointer;
+}
+
+.sheet-tab.selected{
+    color: #207345;
+    border-bottom: 5px solid #207345;
+    outline: none;
+    
 }
 
 .sheet-tab.selected:hover{
