@@ -76,7 +76,8 @@ function addEventsToCells(){
     
     $(".input-cell").blur(function (e) {
         $(this).attr("contenteditable", "false");
-        l 
+        let [rowId, colId] = getRowCol(this);
+        cellData[rowId - 1, colId - 1].text = $(this).text(); 
     });
 
     $(".input-cell").click(function (e) {
