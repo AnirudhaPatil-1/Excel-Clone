@@ -5,7 +5,7 @@ addSheetBtn.addEventListener("click", (e) => {
     sheet.setAttribute("class", "sheet-folder");
 
     let allSheetFolders = document.querySelectorAll(".sheet-folder");
-    sheet.setAttribute("id", allSheetFolders.length + 1);
+    sheet.setAttribute("id", allSheetFolders.length );
 
     sheet.innerHTML = `
         <div class="sheet-content">Sheet ${allSheetFolders.length + 1}</div>
@@ -13,7 +13,21 @@ addSheetBtn.addEventListener("click", (e) => {
 
     sheetsFolderCont.append(sheet);
     createSheetDB();
-})
+    createGraphComponentMatrix();
+    handleSheetActiveness(sheet);
+});
+
+function handleSheetDB(sheetIdx){
+    sheetDB = collectedSheetDB[sheetIdx];
+    graphComponentMatrix = collectedGraphComponent[sheetIdx];
+}
+
+function handleSheetActiveness(sheet){
+    sheet.addEventListener("click", (e) => {
+        let sheetIdx = Number(sheet.getAttribute("id"));
+        handleSheetDB(sheetIdx);
+    })
+}
 
 function createSheetDB(){
     let sheetDB = [];
@@ -38,4 +52,17 @@ function createSheetDB(){
         sheet.push(sheetRow);
     }
     collectedSheetDB.push(sheetDB);
+}
+
+function createGraphComponentMatrix(){
+    let graphComponentMatrix = [];
+    for(let i = 0; i < rows; i++){
+        let row = [];
+        for(let j = 0; j < cols; j++){
+            //why array -> more than 1 child relation(dependent)
+            row.push([]);
+        }
+        graphComponentMatrix.push(row);
+    }
+    collectedGraphComponent.push(graphComponentMatrix);
 }
