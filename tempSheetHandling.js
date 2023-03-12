@@ -22,10 +22,15 @@ function handleSheetDB(sheetIdx){
     graphComponentMatrix = collectedGraphComponent[sheetIdx];
 }
 
+function handleSheetProperties(){
+        
+}
+
 function handleSheetActiveness(sheet){
     sheet.addEventListener("click", (e) => {
         let sheetIdx = Number(sheet.getAttribute("id"));
         handleSheetDB(sheetIdx);
+        handleSheetProperties();
     })
 }
 
