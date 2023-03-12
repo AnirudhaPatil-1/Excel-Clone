@@ -1,3 +1,4 @@
+let activeSheetColor = "#ced6e0";
 let sheetFolderCont = document.querySelector(".sheet-folder-cont");
 let addSheetBtn = document.querySelector(".sheet-add-icon");
 addSheetBtn.addEventListener("click", (e) => {
@@ -36,11 +37,27 @@ function handleSheetRemoval(sheet){
         collectedSheetDB.splice(sheetIdx, 1);
         collectedGraphComponent.splice(sheetIdx, 1);
         //UI
-        sheet.remove();
+        handleSheetRemoval(sheet);
 
-
+        //by default DB to sheet 1 (active)
+        sheetDB = collectedSheetDB[0];
+        graphComponentMatrix = collectedGraphComponent[0];
+        handleSheetProperties();
     })
 } 
+
+function handleSheetRemoval(sheet){
+    //UI
+    sheet.remove();
+    let allSheetFolders = document.querySelectorAll(".sheet-folder");
+    for(let i = 0; i < allSheetFolders.length; i++){
+        allSheetFolders[i].setAttribute("idx", i);
+        let sheetContent = allSheetFolders[i].querySelector(".sheet-content");
+        sheetContent.innerText = `Sheet ${i + 1}`;
+        allSheetFolders[i].style.backgroundColor = "transparent";
+    }
+    allSheetFolders[0].style.backgroundColor = activeSheetColor;
+}
 
 function handleSheetDB(sheetIdx){
     sheetDB = collectedSheetDB[sheetIdx];
