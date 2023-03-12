@@ -11,11 +11,36 @@ addSheetBtn.addEventListener("click", (e) => {
         <div class="sheet-content">Sheet ${allSheetFolders.length + 1}</div>
     `;
 
-    sheetsFolderCont.append(sheet);
+    sheetsFolderCont.appendChild(sheet);
     createSheetDB();
     createGraphComponentMatrix();
     handleSheetActiveness(sheet);
+    handleSheetRemoval(sheet);
+    sheet.click();
 });
+
+function handleSheetRemoval(sheet){
+    sheet.addEventListener("mousedown", (e){
+        if(e.button !== 2) return;
+
+        let allSheetFolders = document.querySelectorAll(".sheet-folder");
+        if(allSheetFolders ===  1) {
+            alert("You need to hav atleast one sheet!");
+            return;
+        }
+        let response = confirm("Your sheet will be removed permanently, Are you sure?");
+        if(response == false) return;
+        let sheetIdx = Number(sheet.getAttribute("id"));
+
+        //DB
+        collectedSheetDB.splice(sheetIdx, 1);
+        collectedGraphComponent.splice(sheetIdx, 1);
+        //UI
+        sheet.remove();
+
+
+    })
+} 
 
 function handleSheetDB(sheetIdx){
     sheetDB = collectedSheetDB[sheetIdx];
