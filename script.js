@@ -444,3 +444,20 @@ $(".add-sheet").click(function(e){
         }
     });
 })
+
+$(".menu-selector").change(function(e) {
+    let value = $(this).val();
+    let key = $(this).attr("id");
+    if(key == "font-family") {
+        $("#font-family").css(key,value);
+    }
+    if(!isNaN(value)) {
+        value = parseInt(value);
+    }
+
+    $(".input-cell.selected").css(key,value);
+    $(".input-cell.selected").each((index,data) => {
+        let [rowId,colId] = getRowCol(data);
+        cellData[rowId-1][colId -1][key] = value;
+    })
+})
