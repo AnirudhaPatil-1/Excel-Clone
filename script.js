@@ -41,94 +41,31 @@ let defaultProperties = {
     "bgcolor": "#fff"
 };
 
-
-//mouse move select multiple cells
-let count = 0;
-let startcellSelected = false;
-let startCell = {};
-let endCell = {};
-let mouseMoved = false;
-let scrollXRStarted = false;
-let scrollXLStarted = false; 
+for(let i = 1; i <= 100; i++){
+    let row = $(`<div class="cell-row"></div>`);
+    for(let j = 1; j <= 100; j++){
+        row.append(`<div id="row-${i}-col-${j}" class"input-cell" contenteditable = "false"></div>`)
+    }
+    $("#cells").append(row);
+}
 
 $("#cells").scroll(function (e) {
     $("#columns").scrollLeft(this.scrollLeft);
     $("#rows").scrollTop(this.scrollTop);
-})
+});
 
-function loadNewSheet(){
-    $("#cells").text("");
-    for (let i = 1; i <= 100; i++) {
-        let row = $(`<div class="cell-row"></div>`);
-        let rowArray = [];
-        for (let j = 1; j <= 100; j++) {
-            row.append(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false"></div>`);
-            rowArray.push({
-                "font-family": "Noto Sans",
-                "font-size": 14,
-                "text": "",
-                "bold": false,
-                "italic": false,
-                "underlined": false,
-                "alignment": "left",
-                "color": "",
-                "bgcolor": ""
-            })
-        }
-        cellData[selectedSheet].push(rowArray);
-        $("#cells").append(row);
-    }
-    addEventsToCells();
-}
+$(".input-cell").dblclick(function(e){
+    $("input-cell.selected").removeClass("selected top-selected bottom-selected left-selected right-selected");
+    $(this).addClass("selected");
+    $(this).attr("contenteditable", "true");
+    $(this).focus();
+});
 
-loadNewSheet();
-
-function addEventsToCells(){
+$(".input-cell").blur(function (e) {
+    $(this).attr("contenteditable", "false");
+    updateCellData("text", $(this).text());
     
-    
-    $(".input-cell").dblclick(function (e) {
-        $(this).attr("contenteditable", "true");
-        $(this).focus();
-    });
-    
-    $(".input-cell").blur(function (e) {
-        $(this).attr("contenteditable", "false");
-        let [rowId, colId] = getRowCol(this);
-        cellData[rowId - 1, colId - 1].text = $(this).text(); 
-    });
-
-    $(".input-cell").click(function (e) {
-        let [rowId, colId] = getRowCol(this);
-        let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(rowId, colId);
-        if ($(this).hasClass("selected") && e.ctrlKey) {
-            unselectCell(this, e, topCell, bottomCell, leftCell, rightCell);
-        } else {
-            selectCell(this, e, topCell, bottomCell, leftCell, rightCell);
-        } 
-    });
-
-    $(".input-cell").mousemove(function (e) {
-        e.preventDefault();
-        //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
-        if (e.buttons == 1) {
-            if (e.pageX > ($(window).width() - 10) && !scrollXRStarted) {
-                // $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
-                scrollXR();
-            } else if (e.pageX < 10 && !scrollXLStarted) {
-                scrollXL();
-            }
-            if (!startcellSelected) {
-                let [rowId, colId] = getRowCol(this);
-                startCell = { "rowId": rowId, "colId": colId };
-                startcellSelected = true;
-                mouseMoved = true;
-            }
-        } else {
-            startcellSelected = false;
-            mouseMoved = false;
-        }
-    });
-}
+});
 
 function getRowCol(ele) {
     let id = $(ele).attr("id");
@@ -146,7 +83,15 @@ function getTopLeftBottomRightCell(rowId, colId) {
     return [topCell, bottomCell, leftCell, rightCell];
 }
 
-
+$(".input-cell").click(function(e){
+    let [rowId, colId] = getRowCol(this);
+    let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(rowId, colId);
+    if($(this).hasClass("selected") && e.ctrlKey){
+        unselectCell(this, e, topCell, bottomCell, leftCell, rightCell);
+    }else{
+        selectCell(this, e, topCell, bottomCell, leftCell, rightCell);
+    }
+});
 
 function unselectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
     if ($(ele).attr("contenteditable") == "false") {
@@ -168,8 +113,7 @@ function unselectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
 
         $(ele).removeClass("selected top-selected bottom-selected left-selected right-selected")
     }
-
-}
+};
 
 function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
     if (e.ctrlKey) {
@@ -222,15 +166,25 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
     }
     $(ele).addClass("selected");
     changeHeader(getRowCol(ele));
-}
+};
 
 function changeHeader([rowId, colId]) {
-    let data = cellData[selectedSheet][rowId - 1][colId - 1];
+    let data;
+    if(cellData[selectedSheet][rowId - 1] && cellData[selectedSheet][rowId - 1][colId - 1]){
+        data = cellData[selectedSheet][rowId - 1][colId - 1];
+    }else{
+        data = defaultProperties;
+    }
     $(".alignment.selected").removeClass("selected");
     $(`.alignment[data-type=${data.alignment}]`).addClass("selected");
     addRemoveSelectFromFontStyle(data, "bold");
     addRemoveSelectFromFontStyle(data, "italic");
     addRemoveSelectFromFontStyle(data, "underlined");
+    $("#fill-color").css("border-bottom", `4px solid ${data.bgcolor}`);
+    $("#text-color").css("border-bottom",  `4px solid ${data.color}`);
+    $("#font-family").val(data["font-family"]);
+    $("#font-size").val(data["font-size"]);
+    $("#font-family").css("font-family", data["font-family"]);
 }
 
 function addRemoveSelectFromFontStyle(data, property){
@@ -240,6 +194,88 @@ function addRemoveSelectFromFontStyle(data, property){
         $(`#${property}`).removeClass("selected");
     }
 }
+
+//mouse move select multiple cells
+let count = 0;
+let startcellSelected = false;
+let startCell = {};
+let endCell = {};
+let mouseMoved = false;
+let scrollXRStarted = false;
+let scrollXLStarted = false; 
+
+
+
+function loadNewSheet(){
+    $("#cells").text("");
+    for (let i = 1; i <= 100; i++) {
+        let row = $(`<div class="cell-row"></div>`);
+        let rowArray = [];
+        for (let j = 1; j <= 100; j++) {
+            row.append(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false"></div>`);
+            rowArray.push({
+                "font-family": "Noto Sans",
+                "font-size": 14,
+                "text": "",
+                "bold": false,
+                "italic": false,
+                "underlined": false,
+                "alignment": "left",
+                "color": "",
+                "bgcolor": ""
+            })
+        }
+        cellData[selectedSheet].push(rowArray);
+        $("#cells").append(row);
+    }
+    addEventsToCells();
+}
+
+loadNewSheet();
+
+function addEventsToCells(){
+
+    $(".input-cell").click(function (e) {
+        let [rowId, colId] = getRowCol(this);
+        let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(rowId, colId);
+        if ($(this).hasClass("selected") && e.ctrlKey) {
+            unselectCell(this, e, topCell, bottomCell, leftCell, rightCell);
+        } else {
+            selectCell(this, e, topCell, bottomCell, leftCell, rightCell);
+        } 
+    });
+
+    $(".input-cell").mousemove(function (e) {
+        e.preventDefault();
+        //e.button gives mouse click -> 0: no click, 1: left click, 2: right click
+        if (e.buttons == 1) {
+            if (e.pageX > ($(window).width() - 10) && !scrollXRStarted) {
+                // $("#cells").scrollLeft($("#cells").scrollLeft() + 100);
+                scrollXR();
+            } else if (e.pageX < 10 && !scrollXLStarted) {
+                scrollXL();
+            }
+            if (!startcellSelected) {
+                let [rowId, colId] = getRowCol(this);
+                startCell = { "rowId": rowId, "colId": colId };
+                startcellSelected = true;
+                mouseMoved = true;
+            }
+        } else {
+            startcellSelected = false;
+            mouseMoved = false;
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
 
 
 
