@@ -1,12 +1,11 @@
 const ps = new PerfectScrollbar("#cells", {
     wheelSpeed: 15,
-    wheelPropagation: true,
 });
-
 
 for (let i = 1; i <= 100; i++) {
     let str = "";
     let n = i;
+
     while (n > 0) {
         let rem = n % 26;
         if (rem == 0) {
@@ -22,9 +21,27 @@ for (let i = 1; i <= 100; i++) {
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
 
-let cellData = {"Sheet1": []};
-let totalSheets = 1;
+let cellData = {
+    "Sheet1": []
+};
+
 let selectedSheet = "Sheet1";
+let totalSheets = 1;
+let lastlyAddedSheet = 1;
+
+let defaultProperties = {
+    "font-family": "Noto Sans",
+    "font-size": 14,
+    "text": "",
+    "bold": false,
+    "italic": false,
+    "underlined": false,
+    "alignment": "left",
+    "color": "#444",
+    "bgcolor": "#fff"
+};
+
+
 //mouse move select multiple cells
 let count = 0;
 let startcellSelected = false;
