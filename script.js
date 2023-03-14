@@ -326,7 +326,6 @@ function setStyle(ele, property, key, value){
     }
 }
 
-$(".pick-color").colorPick();
 
 $(".pick-color").colorPick({
     'initialColor': '#abcd',
@@ -335,14 +334,16 @@ $(".pick-color").colorPick({
     'allowCustomColor': false,
     'palette': ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1", "#bdc3c7", "#95a5a6", "#7f8c8d"],
     'onColorSelected': function() {
-        if(this.color !="#abcd"){
+        if(this.color !="#ABCD"){
             if($(this.element.children()[1]).attr("id") == "fill-color"){
                 $(".input-cell.selected").css("background-color", this.color);
                 $("#fill-color").css("border-bottom",`4px solid ${this.color}`);
+                updateCellData("bgcolor", this.color);
             }
             if($(this.element.children()[1]).attr("id") == "text-color"){
                 $(".input-cell.selected").css("color",this.color);
                 $("#text-color").css("border-bottom", `4px solid ${this.color}`);
+                updateCellData("color", this.color);
             }
         }
     //   this.element.css({'backgroundColor': this.color, 'color': this.color});
@@ -362,16 +363,53 @@ $("#text-color").click(function(e){
     }, 10)
 })
 
+$(".menu-selector").change(function(e){
+    let value = $(this).val();
+    let key = $(this).attr("id");
+    if(key == "font-family"){
+        $("#font-family").css(key, value);
+    }
+    if(!NaN(value)){
+        value = parseInt(value);
+    }
 
-
-
-$(".container").click(function(e){
-    $(".sheet-options-modal").remove();
+    $("input-cell.selected").css(key, value);
+    updateCellData(key, value);
 })
 
-// $(".sheet-tab").blur(function(e){
-//     $(".sheet-tab").attr("contenteditable", "false");
-// })
+function updateCellData(property, value){
+    if(value != defaultProperties[property]){
+        $(".input-cell.selected").each(function(index, data){
+            let [rowId, colId] = getRowCol(data);
+            if(cellData[selectedSheet][rowId - 1] == undefined){
+                cellData[selectedSheet][rowId - 1] = {};
+                cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties};
+                cellData[selectedSheet][rowId - 1][coldId - 1][property] = value;
+            }else{
+                if(cellData[selectedSheet][rowId - 1][coldId - 1] == undefined){
+                    cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties};
+                    cellData[selectedSheet][rowId - 1][colId - 1][property] = value;
+                }else{
+                    cellData[selectedSheet][rowId - 1][coldId - 1][property] = value;
+                }
+            }
+        });
+    }else{
+        $(".input-cell.selected").each(function (index, data){
+            let [rowId, colId] = getRowCol(data);
+            if(cellData[selectedSheet][rowId -1] && cellData[selectedSheet][rowId - 1][colId - 1]){
+                cellData[selectedSheet][rowId - 1][colId - 1][property] = value;
+                if(JSON.stringify(cellData[selectedSheet][rowId - 1][colId - 1]) == JSON.stringify(defaultProperties)){
+                    delete cellData[selectedSheet][rowId - 1][colIdId - 1];
+                    if(Object.keys(cellData[selectedSheet][rowId - 1]).length == 0){
+                        delete cellData[selectedSheet][rowId - 1];
+                    }
+                }
+            }
+        })
+
+    }
+}
 
 
 
@@ -486,7 +524,7 @@ function loadNewSheet(){
 
 loadNewSheet();
 
-function addEventsToCells(){
+function addEventsToCells()
 
     $(".input-cell").click(function (e) {
         let [rowId, colId] = getRowCol(this);
@@ -496,4 +534,4 @@ function addEventsToCells(){
         } else {
             selectCell(this, e, topCell, bottomCell, leftCell, rightCell);
         } 
-    });
+    })
