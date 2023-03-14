@@ -413,18 +413,18 @@ function updateCellData(property, value){
 $(".container").click(function(e){
     $(".sheet-options-modal").remove();
 });
-function addSheetEvents(){
-    $(".sheet-tab.selected").on("contextmenu", function(e){
+function addSheetEvents() {
+    $(".sheet-tab.selected").on("contextmenu", function (e) {
         e.preventDefault();
-        selectedSheet(this);
+        selectSheet(this);
         $(".sheet-options-modal").remove();
         let modal = $(`<div class="sheet-options-modal">
-            <div class="options sheet-rename">Rename</div>
-            <div class="options sheet-delete>Delete</div>
-        </div>`);
-        modal.css({left: e.pageX});
+                        <div class="option sheet-rename">Rename</div>
+                        <div class="option sheet-delete">Delete</div>
+                    </div>`);
+        modal.css({ "left": e.pageX });
         $(".container").append(modal);
-        $(".sheet-rename").click(function(e){
+        $(".sheet-rename").click(function (e) {
             let renameModal = $(`<div class="sheet-modal-parent">
                                     <div class="sheet-rename-modal">
                                         <div class="sheet-modal-title">Rename Sheet</div>
@@ -438,146 +438,78 @@ function addSheetEvents(){
                                         </div>
                                     </div>
                                 </div>`);
-                                
 
-        $(".container").append(renameModal);
-        $(".sheet-modal-input").focus();
-        $(".no-button").click(function(e){
-            $(".sheet-modal-parent").remove();
-        });
-        $(".yes-button").click(funciton(e){
-            renameModal();
-        });
-        $(".sheet-modal-input").keypress(function(e){
-            if(e.key == "Enter"){
+            $(".container").append(renameModal);
+            $(".sheet-modal-input").focus();
+            $(".no-button").click(function (e) {
+                $(".sheet-modal-parent").remove();
+            });
+            $(".yes-button").click(function (e) {
                 renameSheet();
+            });
+            $(".sheet-modal-input").keypress(function (e) {
+                if (e.key == "Enter") {
+                    renameSheet();
+                }
+            })
+        });
+
+        $(".sheet-delete").click(function (e) {
+            if (totalSheets > 1) {
+                let deleteModal = $(`<div class="sheet-modal-parent">
+                                    <div class="sheet-delete-modal">
+                                        <div class="sheet-modal-title">Sheet Name</div>
+                                        <div class="sheet-modal-detail-container">
+                                            <span class="sheet-modal-detail-title">Are you sure?</span>
+                                        </div>
+                                        <div class="sheet-modal-confirmation">
+                                            <div class="button yes-button">
+                                                <div class="material-icons delete-icon">delete</div>
+                                                Delete
+                                            </div>
+                                            <div class="button no-button">Cancel</div>
+                                        </div>
+                                    </div>
+                                </div>`);
+
+                $(".container").append(deleteModal);
+                $(".no-button").click(function (e) {
+                    $(".sheet-modal-parent").remove();
+                });
+                $(".yes-button").click(function (e) {
+                    deleteSheet();
+                });
+            } else {
+                alert("Not possible");
             }
         })
-        })
-    })
+    });
+
+    $(".sheet-tab.selected").click(function (e) {
+        selectSheet(this);
+    });
 }
 
-
-
-function selectSheet(ele){
-    $(".sheet-tab.selected").removeClass("selected");
-    $(ele).addClass("selected");
-    selectedSheet = $(ele).text();
-    loadSheet();
-};
-
-function loadSheet(){
-    $("#cells").text("");
-    let data = cellData[selectedSheet];
-    for(let i = 1; i <= data.length; i++){
-        let row = $(`<div class="cell-row"></div>`);
-        for(let j = 1; j <= data[i - 1].length; j++){
-            let cell = $(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false">${data[i - 1][j - 1].text}</div>`);
-            cell.css({
-                "font-family": data[i - 1][j - 1]["font-family"],
-                "font-size": data[i - 1][j - 1]["font-size"] + "px",
-                "background-color": data[i - 1][j - 1]["bgcolor"],
-                "color": data[i - 1][j - 1].color,
-                "font-weight": data[i - 1][j - 1].bold ? "bold": "",
-                "font-style": data[i - 1][j - 1].italic? "italic": "",
-                "text-decoration": data[i - 1][j - 1].underlined ? "underlined": "",
-                "text-align": data[i - 1][j - 1].alignment
-            })
-            row.append(cell);
-        }
-        $("#cells").append(row);
-    }
-    addEventsToCells();
-}
+addSheetEvents();
 
 $(".add-sheet").click(function(e){
+    lastlyAddedSheet++;
     totalSheets++;
-    cellData[`Sheet${totalSheets}`] = [];
-    selectedSheet = `Sheet${totalSheets}`;
-    loadNewSheet();
+    cellData[`Sheet${lastlyAddedSheet}`] = {};
     $(".sheet-tab.selected").removeClass("selected");
-    $(".sheet-tab-container").append(
-        `<div class="sheet-tab selected">Sheet${totalSheets}</div>`
-    );
+    $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet${lastlyAddedSheet}</div>`);
+    selectSheet();
+    addSheetEvents();
+});
 
-    $(".sheet-tab").off("bind", "click");
-
-    $(".sheet-tab").bind("contextmenu", function(e){
-        e.preventDefault();
-        selectSheet(this);
-        $(".sheet-options-modal").remove();
-        let modal = (`<div class="sheet-options-modal">
-                        <div class="option sheet-rename">Rename</div>
-                        <div class="option sheet-delete">Delete</div>
-                    </div>`);
-        $(".container").append(modal);
-        $(".sheet-options-modal").css({"bottom": 0.04 * $(window).height(), "left": e.pageX});  
-        $(".sheet-rename").click(function(e){
-            $(".sheet-tab.selected").attr("contenteditable", "true");
-            $(".sheet-tab.selected").focus();
-        })
-    });
-
-    $(".sheet-tab").click(function(e){
-        if(!$(this).hasClass("selected")){
-            selectSheet(this);
-        }
-    });
-})
-
-$(".menu-selector").change(function(e) {
-    let value = $(this).val();
-    let key = $(this).attr("id");
-    if(key == "font-family") {
-        $("#font-family").css(key,value);
+function selectSheet(ele){
+    if(ele && !$(ele).hasClass("selected")){
+        $(".sheet-tab.selected").removeClass("selected");
+        $(ele).addClass("selected");
     }
-    if(!isNaN(value)) {
-        value = parseInt(value);
-    }
-
-    $(".input-cell.selected").css(key,value);
-    $(".input-cell.selected").each((index,data) => {
-        let [rowId,colId] = getRowCol(data);
-        cellData[rowId-1][colId -1][key] = value;
-    })
-})
-
-
-function loadNewSheet(){
-    $("#cells").text("");
-    for (let i = 1; i <= 100; i++) {
-        let row = $(`<div class="cell-row"></div>`);
-        let rowArray = [];
-        for (let j = 1; j <= 100; j++) {
-            row.append(`<div id="row-${i}-col-${j}" class="input-cell" contenteditable="false"></div>`);
-            rowArray.push({
-                "font-family": "Noto Sans",
-                "font-size": 14,
-                "text": "",
-                "bold": false,
-                "italic": false,
-                "underlined": false,
-                "alignment": "left",
-                "color": "",
-                "bgcolor": ""
-            })
-        }
-        cellData[selectedSheet].push(rowArray);
-        $("#cells").append(row);
-    }
-    addEventsToCells();
+    emptyPreviousSheet();
+    selectedSheet = $(".sheet-tab.selected").text();
+    loadCurrentSheet();
+    $("#row-1-col-1").click();
 }
 
-loadNewSheet();
-
-function addEventsToCells()
-
-    $(".input-cell").click(function (e) {
-        let [rowId, colId] = getRowCol(this);
-        let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(rowId, colId);
-        if ($(this).hasClass("selected") && e.ctrlKey) {
-            unselectCell(this, e, topCell, bottomCell, leftCell, rightCell);
-        } else {
-            selectCell(this, e, topCell, bottomCell, leftCell, rightCell);
-        } 
-    })
