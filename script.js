@@ -536,3 +536,28 @@ function emptyPreviousSheet(){
         }
     }
 }
+
+function loadCurrentSheet(){
+    let data = cellData[selectedSheet];
+    let rowKeys = Object.keys(data);
+    for(let i of rorwKeys){
+        let rowId = parseInt(i);
+        let colKeys = Object.keys(data[rowId]);
+        for(let j of colKeys){
+            let colId = parseInt(j);
+            let cell =(`#row-${rowId + 1}-col-${colId + 1}`);
+            cell.text(data[rowId][colId].text);
+            cell.css({
+                "font-family": data[rowId][colId]["font-family"],
+                "font-size": data[rowId][colId]["font-size"],
+                "background-color": data[rowId][colId]["bgcolor"],
+                "color": data[rowId][colId].color,
+                "font-weight": data[rowId][colId].bold?"bold":"",
+                "font-style": data[rowId][colId].italic?"italic": "",
+                "text-decoration": data[rowId][colId].underlined?"underline": "",
+                "text-align": data[rowId][colId].alignment
+            });
+        }
+    }
+}
+
