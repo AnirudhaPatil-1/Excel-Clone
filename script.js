@@ -586,3 +586,17 @@ function renameSheet(){
         `)
     }
 }
+
+function deleteSheet(){
+    $(".sheet-modal-parent").remove();
+    let sheetIndex = Object.keys(cellData).indexOf(selectedSheet);
+    let currSelectedSheet = $(".sheet-tab.selected");
+    if(sheetIndex == 0){
+        selectedSheet(currSelectedSheet.next()[0]);
+    }else{
+        selectedSheet(currSelectedSheet.prev()[0]);
+    }
+    delete cellData[currSelectedSheet.text()];
+    currSelectedSheet.remove();
+    totalSheets--;
+}
