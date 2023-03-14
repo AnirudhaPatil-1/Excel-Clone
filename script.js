@@ -513,3 +513,26 @@ function selectSheet(ele){
     $("#row-1-col-1").click();
 }
 
+function emptyPreviousSheet(){
+    let data = cellData[selectedSheet];
+    let rowKeys = Object.keys(data);
+    for(let i of rowKeys){
+        let rowId = parseInt(i);
+        let colKeys = Object.keys(data[rowId]);
+        for(let j of colKeys){
+            let colId = parseInt(j);
+            let cell = $(`#row-${rowId + 1}-col-${colId + 1}`);
+            cell.text("");
+            cell.css({
+                "font-family": "Noto Sans",
+                "font-size": 14,
+                "background-color": "#fff",
+                "color": "#444",
+                "font-weight": "",
+                "font-style": "",
+                "text-decoration": "",
+                "text-align": "left"
+            });
+        }
+    }
+}
