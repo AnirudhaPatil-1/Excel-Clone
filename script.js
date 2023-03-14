@@ -407,8 +407,54 @@ function updateCellData(property, value){
                 }
             }
         })
-
     }
+}
+
+$(".container").click(function(e){
+    $(".sheet-options-modal").remove();
+});
+function addSheetEvents(){
+    $(".sheet-tab.selected").on("contextmenu", function(e){
+        e.preventDefault();
+        selectedSheet(this);
+        $(".sheet-options-modal").remove();
+        let modal = $(`<div class="sheet-options-modal">
+            <div class="options sheet-rename">Rename</div>
+            <div class="options sheet-delete>Delete</div>
+        </div>`);
+        modal.css({left: e.pageX});
+        $(".container").append(modal);
+        $(".sheet-rename").click(function(e){
+            let renameModal = $(`<div class="sheet-modal-parent">
+                                    <div class="sheet-rename-modal">
+                                        <div class="sheet-modal-title">Rename Sheet</div>
+                                        <div class="sheet-modal-input-container">
+                                            <span class="sheet-modal-input-title">Rename Sheet to:</span>
+                                            <input class="sheet-modal-input" type="text" />
+                                        </div>
+                                        <div class="sheet-modal-confirmation">
+                                            <div class="button yes-button">OK</div>
+                                            <div class="button no-button">Cancel</div>
+                                        </div>
+                                    </div>
+                                </div>`);
+                                
+
+        $(".container").append(renameModal);
+        $(".sheet-modal-input").focus();
+        $(".no-button").click(function(e){
+            $(".sheet-modal-parent").remove();
+        });
+        $(".yes-button").click(funciton(e){
+            renameModal();
+        });
+        $(".sheet-modal-input").keypress(function(e){
+            if(e.key == "Enter"){
+                renameSheet();
+            }
+        })
+        })
+    })
 }
 
 
