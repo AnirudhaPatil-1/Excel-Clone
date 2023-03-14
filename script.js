@@ -561,3 +561,28 @@ function loadCurrentSheet(){
     }
 }
 
+
+function renameSheet(){
+    let newSheetName = $(".sheet-modal-input").val();
+    if(newSheetName && !Object.keys(cellData).includes(newSheetName)){
+        let newCellData = {};
+        for(let i of Object.keys(cellData)){
+            if(i == selectedSheet){
+                newCellData[newSheetName] = cellData[selectedSheet];
+            }else{
+                newCellData[i] = cellData[i]
+            }
+        }
+
+        cellData = newCellData;
+
+        selectedSheet = newSheetName;
+        $(".sheet-tab.selected").text(newSheetName);
+        $(".sheet-modal-parent").remove();
+    }else{
+        $(".rename-error").remove();
+        $(".sheet-modal-input-container").append(`
+        <div class="rename-error">Sheet name is not valid or Sheet name already exists!</div>
+        `)
+    }
+}
