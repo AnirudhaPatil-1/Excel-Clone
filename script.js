@@ -600,3 +600,19 @@ function deleteSheet(){
     currSelectedSheet.remove();
     totalSheets--;
 }
+
+$(".left-scroller").click(function(e){
+    let keysArray = Object.keys(cellData);
+    let selectedSheetIndex = keysArray.indexOf(selectedSheet);
+    if(selectedSheetIndex != 0){
+        selectSheet($(".sheet-tab.selected").prev()[0]);
+    }
+});
+
+$(".right-scroller").click(function(e){
+    let keysArray = Object.keys(cellData);
+    let selectedSheetIndex = keysArray.indexOf(selectedSheet);
+    if(selectedSheetIndex != (keysArray.length - 1)){
+        selectSheet($(".sheet-tab.selected").next()[0]);
+    }
+});
