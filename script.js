@@ -500,6 +500,7 @@ $(".add-sheet").click(function(e){
     $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet${lastlyAddedSheet}</div>`);
     selectSheet();
     addSheetEvents();
+    $(".sheet-tab.selected")[0].scrollIntoView();
 });
 
 function selectSheet(ele){
@@ -606,6 +607,7 @@ $(".left-scroller").click(function(e){
     let selectedSheetIndex = keysArray.indexOf(selectedSheet);
     if(selectedSheetIndex != 0){
         selectSheet($(".sheet-tab.selected").prev()[0]);
+        $(".sheet-tab.selected")[0].scrollIntoView();
     }
 });
 
@@ -614,5 +616,6 @@ $(".right-scroller").click(function(e){
     let selectedSheetIndex = keysArray.indexOf(selectedSheet);
     if(selectedSheetIndex != (keysArray.length - 1)){
         selectSheet($(".sheet-tab.selected").next()[0]);
+        $(".sheet-tab.selected")[0].scrollIntoView();
     }
 });
