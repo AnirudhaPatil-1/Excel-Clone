@@ -441,3 +441,33 @@ body {
     font-size: 14px;
     margin-top: 5px ;
 }
+
+    /* .file-modal-container{
+        position: absolute;
+        height: 100vh;
+        width: 50vw;
+        top: 0;
+        background-color: #107C41;
+        background-color: yellow;
+        display: flex;
+        justify-content: row;
+    }
+
+    .options-container{
+        height: 100%;
+        width:  20%;
+        background-color: #107C41;
+        border: 1px solid white;
+    }
+
+
+    .preview-container{
+        height: 100%;
+        width: 80%;
+        background-color: #107C41;
+        border: 1px solid white;
+} */
+
+
+
+
