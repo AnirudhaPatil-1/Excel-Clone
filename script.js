@@ -25,6 +25,8 @@ let cellData = {
     "Sheet1": []
 };
 
+let saved = true;
+
 let selectedSheet = "Sheet1";
 let totalSheets = 1;
 let lastlyAddedSheet = 1;
@@ -378,6 +380,7 @@ $(".menu-selector").change(function(e){
 })
 
 function updateCellData(property, value){
+    let currCellData = JSON.stringify(cellData);
     if(value != defaultProperties[property]){
         $(".input-cell.selected").each(function(index, data){
             let [rowId, colId] = getRowCol(data);
@@ -407,6 +410,9 @@ function updateCellData(property, value){
                 }
             }
         })
+    }
+    if(save && currCellData != JSON.stringify(cellData)){
+        save = false;
     }
 }
 
@@ -458,7 +464,7 @@ function addSheetEvents() {
             if (totalSheets > 1) {
                 let deleteModal = $(`<div class="sheet-modal-parent">
                                     <div class="sheet-delete-modal">
-                                        <div class="sheet-modal-title">Sheet Name</div>
+                                        <div class="sheet-modal-title">${selectedSheet}</div>
                                         <div class="sheet-modal-detail-container">
                                             <span class="sheet-modal-detail-title">Are you sure?</span>
                                         </div>
@@ -493,6 +499,7 @@ function addSheetEvents() {
 addSheetEvents();
 
 $(".add-sheet").click(function(e){
+    save = false;
     lastlyAddedSheet++;
     totalSheets++;
     cellData[`Sheet${lastlyAddedSheet}`] = {};
@@ -563,8 +570,10 @@ function loadCurrentSheet(){
 }
 
 function renameSheet(){
+    
     let newSheetName = $(".sheet-modal-input").val();
     if(newSheetName && !Object.keys(cellData).includes(newSheetName)){
+        save = false;
         let newCellData = {};
         for(let i of Object.keys(cellData)){
             if(i == selectedSheet){
@@ -651,14 +660,45 @@ $("#menu-file").click(function(e){
         }, 300);
     });
     $(".new").click(function(e){
-        emptyPreviousSheet();
-        cellData = {"Sheet1": {}};
-        $(".sheet-tab").remove();
-        $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet1</div>`);
-        selectedSheet = "Sheet1";
-        $(".title").text("Excel - Book");
-        $("#row-1-col-1").click();
-    });
+        if(save){
+            newFile();
+        }else{
+            $(".container").append(`<div class="sheet-modal-parent">
+                                        <div class="sheet-delete-modal">
+                                            <div class="sheet-modal-title">${$(".title").text()} </div>
+                                            <div class="sheet-modal-detail-container">
+                                                <span class="sheet-modal-detail-title">Do you want to save Changes?</span>
+                                            </div>
+                                            <div class="sheet-modal-confirmation">
+                                                <div class="button yes-button">
+                                                    Yes
+                                                </div>
+                                                <div class="button no-button">No</div>
+                                            </div>
+                                        </div>
+                                    </div>`);
+            
+            $(".yes-button").click(function(e){
+                //save function
+            });
+            $(".no-button,.yes-button").click(function(e){
+                $("sheet-modal-parent").remove();
+                newFile();
+            })
+            
 
-    
-})
+        }
+    });
+});
+
+function newFile(){
+    emptyPreviousSheet();
+    cellData = {"Sheet1": {}};
+    $(".sheet-tab").remove();
+    $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet1</div>`);
+    addSheetEvents();
+    selectedSheet = "Sheet1";
+    lastlyAddedSheet = 1;
+    $(".title").text("Excel - Book");
+    $("#row-1-col-1").click();
+}
