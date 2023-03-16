@@ -618,7 +618,7 @@ $("#menu-file").click(function(e){
             <div class="file-options-modal">
             <div class="close">
             <div class="material-icons close-icon">arrow_circle_down</div>
-            <div>close</div>
+            <div>Close</div>
             </div>
             <div class="new">
             <div class="material-icons new-icon">insert_drive_file</div>
@@ -634,10 +634,22 @@ $("#menu-file").click(function(e){
             </div>
             </div>
             <div class="file-recent-modal"></div>
+            <div class="file-transparent"></div>
         </div>
     `)
     $(".container").append(fileModal);
-    $(".close").click(function(e){
-        fileModal.remove();
-    })
+    fileModal.animate({
+        width: "100vw"
+    }, 300);
+    $(".close, .file-transparent").click(function(e){
+        fileModal.animate({
+            width: "0vw"
+        }, 300);
+    
+        setTimeout(() => {
+            fileModal.remove();
+        }, 300);
+    });
+
+    
 })
