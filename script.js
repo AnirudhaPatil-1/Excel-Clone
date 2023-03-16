@@ -562,7 +562,6 @@ function loadCurrentSheet(){
     }
 }
 
-
 function renameSheet(){
     let newSheetName = $(".sheet-modal-input").val();
     if(newSheetName && !Object.keys(cellData).includes(newSheetName)){
@@ -613,4 +612,32 @@ $(".left-scroller,.right-scroller").click(function(e){
         $(".sheet-tab.selected")[0].scrollIntoView();
 });
 
-
+$("#menu-file").click(function(e){
+    let fileModal = $(`
+        <div class="file-modal">
+            <div class="file-options-modal">
+            <div class="close">
+            <div class="material-icons close-icon">arrow_circle_down</div>
+            <div>close</div>
+            </div>
+            <div class="new">
+            <div class="material-icons new-icon">insert_drive_file</div>
+            <div>New</div>
+            </div>
+            <div class="open">
+            <div class="material-icons open-icon">folder_open</div>
+            <div>Open</div>
+            </div>
+            <div class="save">
+            <div class="material-icons save-icon">save</div>
+            <div>Save</div>
+            </div>
+            </div>
+            <div class="file-recent-modal"></div>
+        </div>
+    `)
+    $(".container").append(fileModal);
+    $(".close").click(function(e){
+        fileModal.remove();
+    })
+})
