@@ -442,31 +442,60 @@ body {
     margin-top: 5px ;
 }
 
-    /* .file-modal-container{
-        position: absolute;
-        height: 100vh;
-        width: 50vw;
-        top: 0;
-        background-color: #107C41;
-        background-color: yellow;
-        display: flex;
-        justify-content: row;
-    }
+.file-modal{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 50vw;
+    display: flex;
+}
 
-    .options-container{
-        height: 100%;
-        width:  20%;
-        background-color: #107C41;
-        border: 1px solid white;
-    }
+.file-options-modal{
+    width: 15rem;
+    height: 100%;
+    background-color: #217346;
+    color: #fff;
+    
+}
 
+.file-recent-modal{
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+}
 
-    .preview-container{
-        height: 100%;
-        width: 80%;
-        background-color: #107C41;
-        border: 1px solid white;
-} */
+.close,.new,.open,.save{
+    display: flex;
+    align-items: center;
+    padding-top: 8px ;
+    padding-bottom: 8px ;
+    width: 100%;
+    font-size: 16p;
+    justify-content: center;
+    font-weight: 300;
+    position: relative;
+    
+}
+
+.close-icon,.new-icon,.open-icon,.save-icon{
+    position: absolute;
+    left: 1rem;
+}
+
+.close{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.close-icon{
+    transform: rotate(90deg );
+}
+
+.close:hover{
+    background-color: #1d633c;
+    cursor: pointer;
+}
 
 
 
