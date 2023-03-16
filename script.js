@@ -650,6 +650,15 @@ $("#menu-file").click(function(e){
             fileModal.remove();
         }, 300);
     });
+    $(".new").click(function(e){
+        emptyPreviousSheet();
+        cellData = {"Sheet1": {}};
+        $(".sheet-tab").remove();
+        $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet1</div>`);
+        selectedSheet = "Sheet1";
+        $(".title").text("Excel - Book");
+        $("#row-1-col-1").click();
+    });
 
     
 })
