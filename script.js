@@ -719,5 +719,16 @@ function saveFile(){
                                     </div>
                                 </div>
                             </div>`);
-    
+    $(".yes-button").click(function(e){
+        $("title").text($(".sheet-modal-input").val());
+        let a = document.createElement("a");
+        a.href =`data:application/json:charset=utf-i,${encodeURIComponent(JSON.stringify(cellData))}`;
+        a.download = $(".title").text() + ".json";
+        $(".container").append(a);
+        a.click();
+        a.remove();
+    })
+    $(".no-button, .yes-button").click(function(e){
+        $(".sheet-modal-parent").remove();
+    })
 }
