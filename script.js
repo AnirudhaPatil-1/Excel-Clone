@@ -679,7 +679,7 @@ $("#menu-file").click(function(e){
                                     </div>`);
             
             $(".yes-button").click(function(e){
-                //save function
+                saveFile();
             });
             $(".no-button,.yes-button").click(function(e){
                 $("sheet-modal-parent").remove();
@@ -720,13 +720,14 @@ function saveFile(){
                                 </div>
                             </div>`);
     $(".yes-button").click(function(e){
-        $("title").text($(".sheet-modal-input").val());
+        $(".title").text($(".sheet-modal-input").val());
         let a = document.createElement("a");
-        a.href =`data:application/json:charset=utf-i,${encodeURIComponent(JSON.stringify(cellData))}`;
+        a.href =`data:application/json,${encodeURIComponents(JSON.stringify(cellData))}`;
         a.download = $(".title").text() + ".json";
         $(".container").append(a);
         a.click();
         a.remove();
+        save = true;
     })
     $(".no-button, .yes-button").click(function(e){
         $(".sheet-modal-parent").remove();
