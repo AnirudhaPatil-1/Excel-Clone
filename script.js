@@ -688,7 +688,9 @@ $("#menu-file").click(function(e){
         }
     });
     $(".save").click(function(e){
-        saveFile();
+        if(!save){
+            saveFile();
+        }
     })
 });
 
@@ -726,7 +728,7 @@ function saveFile(){
         a.download = $(".title").text() + ".json";
         $(".container").append(a);
         a.click();
-        a.remove();
+        // a.remove();
         save = true;
     })
     $(".no-button, .yes-button").click(function(e){
