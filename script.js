@@ -650,7 +650,7 @@ $("#menu-file").click(function(e){
     fileModal.animate({
         width: "100vw"
     }, 300);
-    $(".close, .file-transparent, .new, .save").click(function(e){
+    $(".close, .file-transparent, .new, .save, .open").click(function(e){
         fileModal.animate({
             width: "0vw"
         }, 300);
@@ -678,12 +678,13 @@ $("#menu-file").click(function(e){
                                         </div>
                                     </div>`);
             
-            $(".yes-button").click(function(e){
-                saveFile();
-            });
-            $(".no-button,.yes-button").click(function(e){
-                $("sheet-modal-parent").remove();
+            $(".no-button").click(function(e){
+                $(".sheet-modal-parent").remove();
                 newFile();
+            });
+            $(".yes-button").click(function(e){
+                $(".sheet-modal-parent").remove();
+                saveFile(true);
             });
         }
     });
@@ -691,6 +692,10 @@ $("#menu-file").click(function(e){
         if(!save){
             saveFile();
         }
+    });
+
+    $(".open").click(function(e){
+        openFile();
     })
 });
 
@@ -707,7 +712,7 @@ function newFile(){
 }
 
 
-function saveFile(){
+function saveFile(newClicked){
     $(".container").append(`<div class="sheet-modal-parent">
                                 <div class="sheet-rename-modal">
                                     <div class="sheet-modal-title">Save File</div>
@@ -733,5 +738,21 @@ function saveFile(){
     })
     $(".no-button, .yes-button").click(function(e){
         $(".sheet-modal-parent").remove();
+        if(newClicked){
+            newFile();
+        }
     })
 }
+
+//git 1
+function openFile(){
+    let inputFile = $(`<input type="file" />`);
+    $(".container").append(inputFile);
+    inputFile.click();
+    inputFile.change(function(e){
+        let file = e.target.files[0];
+        console.log(file);
+    })
+}
+
+
