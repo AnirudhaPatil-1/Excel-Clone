@@ -746,12 +746,41 @@ function saveFile(newClicked){
 
 //git 1
 function openFile(){
-    let inputFile = $(`<input type="file" />`);
+    let inputFile = $(`<input  accept="application/json" type="file" />`);
     $(".container").append(inputFile);
     inputFile.click();
     inputFile.change(function(e){
         let file = e.target.files[0];
-        console.log(file);
+        $(".title").text(file.name.split(".json")[0]);
+        let reader = new FileReader();
+        reader.readAsText(file);
+        read.onload = () => {
+            // console.log(reader.result);
+            emptyPreviousSheet();
+            $(".sheet-tab").remove();
+            cellData = JSON.parse(reader.result);
+            let sheets = Object.keys(cellData);
+            for(let i of sheets){
+                if(i.includes("Sheet")){
+                    let splittedSheetArray = i.split("Sheet");
+                    if(splittedSheetArray.length == 2 && !NaN(splittedSheetArray[1])){
+                        lastlyAddedSheet = parseInt(splittedSheetArray[1]);
+                    }
+                }
+                $(".sheet-tab-container").append(`<div class="sheet-tab selected" >${i}</div>`);
+            }
+            addSheetEvents();
+            $(".sheet-tab").removeClass("selected");
+            //the second $() is used to wrap as the [] bracket is used
+            $($(".sheet-tab")[0]).addClass("selected");
+            selectedSheet = sheets[0];
+            totalSheets = sheets.length;
+            // lastlyAddedSheet = totalSheets;
+            loadCurrentSheet();
+            inputFile.remove();
+
+        }
+        
     })
 }
 
