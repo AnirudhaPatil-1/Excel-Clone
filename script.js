@@ -799,4 +799,21 @@ $("#copy").click(function(e){
     });
 });
 
+$("#paste").click(function(e){
+    let startCell = getRowCol($(".input-cell.selected")[0]);
+    let rows = Object.keys(clipboard.cellData);
+    for(let i of rows){
+        let cols = Object.keys(clipboard.cellData[i]);
+        for(let j of cols){
+            let rowDistance = parseInt(i) - parseInt(clipboard.startCell[0]);
+            let colDistance = parseInt(j) - parseInt(clipboard.startCell[1]); 
+            if(!cellData[selectedSheet][startCell[0] + rowDistance - 1 ]){
+                cellData[selectedSheet][startCell[0] + rowDistance - 1 ] = {};
+            }
+            cellData[selectedSheet][startCell[0] + rowDistance - 1][startCell[1] + colDistance - 1] = {...clipboard.cellData[i][j]};
+        }
+    }
+    loadCurrentSheet();
+})
+
 
