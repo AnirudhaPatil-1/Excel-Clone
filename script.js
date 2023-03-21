@@ -787,6 +787,7 @@ function openFile(){
 let clipboard = {startCell: [], cellData: {}};
 
 $("#copy").click(function(e){
+    clipboard = {startCell: [], cellData: {}};
     clipboard.startCell = getRowCol($(".input-cell.selected")[0]);
     $(".input-cell.selected").each(function(index, data){
         let [rowId, colId] = getRowCol(data);
