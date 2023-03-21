@@ -760,6 +760,7 @@ function openFile(){
             $(".sheet-tab").remove();
             cellData = JSON.parse(reader.result);
             let sheets = Object.keys(cellData);
+            lastlyAddedSheet = 1;
             for(let i of sheets){
                 if(i.includes("Sheet")){
                     let splittedSheetArray = i.split("Sheet");
@@ -778,10 +779,24 @@ function openFile(){
             // lastlyAddedSheet = totalSheets;
             loadCurrentSheet();
             inputFile.remove();
-
         }
         
     })
 }
+
+let clipboard = {startCell: [], cellData: {}};
+
+$("#copy").click(function(e){
+    clipboard.startCell = getRowCol($(".input-cell.selected")[0]);
+    $(".input-cell.selected").each(function(index, data){
+        let [rowId, colId] = getRowCol(data);
+        if(cellData[selectedSheet][rowId - 1] && cellData[selectedSheet][rowId - 1][col - 1]){
+            if(!clipboard.cellData[rowId]){
+                clipboard.cellData[rowId] = {};
+            }
+            clipboard.cellData[rowId][colId] = {...cellData[selectedSheet][rowId - 1][colId - 1]};
+        }
+    });
+});
 
 
