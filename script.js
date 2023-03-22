@@ -16,7 +16,7 @@ for (let i = 1; i <= 100; i++) {
             n = Math.floor(n / 26);
         }
     }
-    $("#columns").append(`<div class="column-name">${str}</div>`)
+    $("#columns").append(`<div class="column-name column-${i}" id="${str}">${str}</div>`)
     // console.log(str);
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
@@ -40,7 +40,10 @@ let defaultProperties = {
     "underlined": false,
     "alignment": "left",
     "color": "#444",
-    "bgcolor": "#fff"
+    "bgcolor": "#fff",
+    "formula": "",
+    "upStream": [],
+    "downStream": []
 };
 
 for(let i = 1; i <= 100; i++) {
@@ -387,11 +390,11 @@ function updateCellData(property, value){
             let [rowId, colId] = getRowCol(data);
             if(cellData[selectedSheet][rowId - 1] == undefined){
                 cellData[selectedSheet][rowId - 1] = {};
-                cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties};
+                cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
                 cellData[selectedSheet][rowId - 1][coldId - 1][property] = value;
             }else{
                 if(cellData[selectedSheet][rowId - 1][coldId - 1] == undefined){
-                    cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties};
+                    cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
                     cellData[selectedSheet][rowId - 1][colId - 1][property] = value;
                 }else{
                     cellData[selectedSheet][rowId - 1][coldId - 1][property] = value;
@@ -838,5 +841,38 @@ $("#paste").click(function(e){
         clipboard = {startCell: [], cellData: {}};
     }
 })
+
+$("#formula-input").blur(function(e){
+    if($(".input-cell.selected").length > 0){
+        $(".input-cell.selected").each(function(index, data){
+            let formula = $(this).text();
+            let tempElements = formula.split(" ");
+            let elements = [];
+            for(let i of tempElements){
+                if(i.length >= 2){
+                    i = i.replace("(", "");
+                    i = i.replace(")", "");
+                    elements.push(i);
+                }
+            }
+            if(updateStreams(this,elements)){
+
+            }else{
+                alert("Formula is not valid");
+            }
+        })
+        
+    }else{
+        alert("Please select the cell first");
+    }
+});
+
+function updateStreams(ele, elements){
+    let [rowId, colId] = getRowCol(ele);
+    let selfColCode = $(`.column-${colId}`).attr("id");
+    if(elements.includes(selfColCode + rowId)){
+        return false;
+    }
+}
 
 
