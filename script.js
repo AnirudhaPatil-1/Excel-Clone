@@ -789,6 +789,7 @@ function openFile(){
 }
 
 let clipboard = {startCell: [], cellData: {}};
+
 let contentCutted = false;
 $("#cut, #copy").click(function(e){
     if($(this).text() == "content_cut"){
