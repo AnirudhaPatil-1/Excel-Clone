@@ -841,11 +841,10 @@ $("#paste").click(function(e){
         contentCutted = false;
         clipboard = {startCell: [], cellData: {}};
     }
-})
+});
 
 $("#formula-input").blur(function(e){
     if($(".input-cell.selected").length > 0){
-        $(".input-cell.selected").each(function(index, data){
             let formula = $(this).text();
             let tempElements = formula.split(" ");
             let elements = [];
@@ -860,8 +859,8 @@ $("#formula-input").blur(function(e){
 
             }else{
                 alert("Formula is not valid");
-            }
-        })
+    }
+        
         
     }else{
         alert("Please select the cell first");
