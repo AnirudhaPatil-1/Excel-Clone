@@ -867,6 +867,14 @@ function updateStreams(ele, elements){
     if(elements.includes(selfColCode + rowId)){
         return false;
     }
+
+    if(!cellData[selectedSheet][rowId - 1]){
+        cellData[selectedSheet][rowId - 1] = {};
+        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
+    }else if(!cellData[selectedSheet][rowId - 1][colId - 1]){
+        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
+    }
+    return true;
 }
 
 
