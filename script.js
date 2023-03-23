@@ -843,29 +843,23 @@ $("#paste").click(function(e){
     }
 });
 
-$("#formula-input").blur(function(e){
-    if($(".input-cell.selected").length > 0){
-            let formula = $(this).text();
-            let tempElements = formula.split(" ");
-            let elements = [];
-            for(let i of tempElements){
-                if(i.length >= 2){
-                    i = i.replace("(", "");
-                    i = i.replace(")", "");
-                    elements.push(i);
-                }
+$("#formula-input").blur(function(e) {
+    if($(".input-cell.selected").length > 0) {
+        let formula = $(this).text();
+        let tempElements = formula.split(" ");
+        let elements = [];
+        for(let i of tempElements) {
+            if(i.length >=2) {
+                i = i.replace("(","");
+                i = i.replace(")","");
+                elements.push(i);
             }
-            if(updateStreams(this,elements)){
-
-            }else{
-                alert("Formula is not valid");
+        }
+        console.log(elements);
+    } else {
+        alert("Please select a cell first!");
     }
-        
-        
-    }else{
-        alert("Please select the cell first");
-    }
-});
+})
 
 function updateStreams(ele, elements){
     let [rowId, colId] = getRowCol(ele);
