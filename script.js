@@ -17,7 +17,6 @@ for (let i = 1; i <= 100; i++) {
         }
     }
     $("#columns").append(`<div class="column-name column-${i}" id="${str}">${str}</div>`)
-    // console.log(str);
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
 
@@ -68,7 +67,14 @@ $(".input-cell").dblclick(function(e){
 
 $(".input-cell").blur(function (e) {
     $(this).attr("contenteditable", "false");
+    let [rowId, colId] = getRowCol(this);
+    if(cellData[selectedSheet][rowId - 1][colId - 1].formula != ""){
+        updateStreams(this,[]);
+    }
+    cellData[selectedSheet][rowId - 1][colId - 1].formula = "";
     updateCellData("text", $(this).text());
+    let selfColCode = $(`.column-${colId}`).attr("id");
+    evalFormula(selfColCode + rowId);
     
 });
 
