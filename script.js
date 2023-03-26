@@ -883,7 +883,14 @@ function updateStreams(ele, elements){
         cellData[selectedSheet][rowId - 1][colId - 1].upstream = [...elements];
     }
 
-    
+    for(let i of elements){
+        let [calRowId, calColId] = codeToValue(i);
+        if(!cellData[selectedSheet][calRowId - 1]){
+            cellData[selectedSheet][calRowId-1] = {};
+            cellData[selectedSheet][calRowId-1][calColId-1] = {defaultProperties, "upstream"}
+
+        }
+    }
 }
 
 
