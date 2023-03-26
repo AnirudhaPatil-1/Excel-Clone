@@ -880,6 +880,21 @@ function updateStreams(ele, elements){
     }else if(!cellData[selectedSheet][rowId - 1][colId - 1]){
         cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [...elements], "downStream": []};
     }else{
+        let upStream = [...cellData[selectedSheet][rowId-1][colId-1].upStream];
+        if(update){
+            for(let i of oldUpstream){
+                let [calRowId, calColId] = codeToValue(i);
+                let index = cellData[selectedSheet][calRowId-1][calColId-1].downStream.indexOf(selfColCode + rowId);
+                cellData[selectedSheet][calRowId-1][calColId-1].downStream.splice(index, 1);
+                if(JSON.stringify(cellData[selectedSheet][calRowId-1][calColId-1]) == JSON.stringify(defaultProperties)){
+                    delete cellData[selectedSheet][calRowId-1][calColId-1];
+                    if(Object.keys(cellData[selectedSheet][calRowId-1]).length == 0){
+                        delete cellData[selectedSheet][calRowId-1];
+                    }
+                }
+                
+            }
+        }
         cellData[selectedSheet][rowId - 1][colId - 1].upstream = [...elements];
     }
 
