@@ -876,11 +876,14 @@ function updateStreams(ele, elements){
 
     if(!cellData[selectedSheet][rowId - 1]){
         cellData[selectedSheet][rowId - 1] = {};
-        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
+        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [...elements], "downStream": []};
     }else if(!cellData[selectedSheet][rowId - 1][colId - 1]){
-        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [], "downStream": []};
+        cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [...elements], "downStream": []};
+    }else{
+        cellData[selectedSheet][rowId - 1][colId - 1].upstream = [...elements];
     }
-    return true;
+
+    
 }
 
 
