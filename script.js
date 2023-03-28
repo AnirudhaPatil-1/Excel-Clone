@@ -874,6 +874,16 @@ function updateStreams(ele, elements){
         return false;
     }
 
+    if(cellData[selectedSheet][rowId-1] && cellData[selectedSheet][rowId-1][colId-1]){
+        let downStream = cellData[selectedSheet][rowId-1][colId-1].downStream;
+        let upStream = cellData[selectedSheet][rowId-1][colId-1].upstream;
+        for(let i of downStream){
+            if(elements.includes(i)){
+                return false;
+            }
+        }
+    }
+
     if(!cellData[selectedSheet][rowId - 1]){
         cellData[selectedSheet][rowId - 1] = {};
         cellData[selectedSheet][rowId - 1][colId - 1] = {...defaultProperties, "upStream": [...elements], "downStream": []};
