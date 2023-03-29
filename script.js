@@ -919,8 +919,11 @@ function updateStreams(ele, elements){
             cellData[selectedSheet][calRowId-1][calColId-1] = {defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
         }else if(!cellData[selectedSheet][calRowId-1][calColId-1]){
             cellData[selectedSheet][calRowId-1][calColId-1] = {...defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
+        }else{
+            cellData[selectedSheet][calRowId-1][calColId-1].downStream.push(selfColCode + rowId);
         }
     }
+    return true;
 }
 
 
