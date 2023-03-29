@@ -926,4 +926,19 @@ function updateStreams(ele, elements){
     return true;
 }
 
+function codeToValue(code){
+    let colCode = "";
+    let rowCode = "";
+    for(let i = 0; i < code.length; i++){
+        if(!isNaN(code.charAt(i))){
+            rowCode += code.charAt(i);
+        }else{
+            colCode += code.charAt(i);
+        }
+    }
+    let colId = parseInt($(`#${colCode}`).attr("class").split(" ")[1].split("-")[1]);
+    let rowId = parseInt(rowCode);
+    return [rowId, colId];
+}
+
 
