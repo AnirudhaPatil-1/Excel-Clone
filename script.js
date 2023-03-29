@@ -902,7 +902,11 @@ function updateStreams(ele, elements){
                         delete cellData[selectedSheet][calRowId-1];
                     }
                 }
-                
+                index = cellData[selectedSheet][rowId-1][colId-1].upStream.indexOf(i);
+                cellData[selectedSheet][calRowId-1].upstream.splice(index, 1);
+            }
+            for(let i of elements){
+                cellData[selectedSheet][rowId-1][colId-1].upStream.push(i);
             }
         }
         cellData[selectedSheet][rowId - 1][colId - 1].upstream = [...elements];
@@ -912,8 +916,9 @@ function updateStreams(ele, elements){
         let [calRowId, calColId] = codeToValue(i);
         if(!cellData[selectedSheet][calRowId - 1]){
             cellData[selectedSheet][calRowId-1] = {};
-            cellData[selectedSheet][calRowId-1][calColId-1] = {defaultProperties, "upstream"}
-
+            cellData[selectedSheet][calRowId-1][calColId-1] = {defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
+        }else if(!cellData[selectedSheet][calRowId-1][calColId-1]){
+            cellData[selectedSheet][calRowId-1][calColId-1] = {...defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
         }
     }
 }
