@@ -941,4 +941,33 @@ function codeToValue(code){
     return [rowId, colId];
 }
 
+function evalFormula(cell) {
+    let [rowId, colId] = codeToValue(cell);
+    let formula = cellData[selectedSheet][rowId - 1][colId - 1].formula;
+    console.log(formula);
+    if (formula != "") {
+        let upStream = cellData[selectedSheet][rowId - 1][colId - 1].upStream;
+        let upStreamValue = [];
+        for (let i in upStream) {
+            let [calRowId, calColId] = codeToValue(upStream[i]);
+            let value;
+            if (cellData[selectedSheet][calRowId - 1][calColId - 1].text == "") {
+                value = "0";
+            }else {
+                value = cellData[selectedSheet][calRowId - 1][calColId - 1].text;
+            }
+            upStreamValue.push(value);
+            console.log(upStreamValue);
+            formula = formula.replace(upStream[i], upStreamValue[i]);
+        }
+        cellData[selectedSheet][rowId - 1][colId - 1].text = eval(formula);
+        loadCurrentSheet();
+    }
+    let downStream = cellData[selectedSheet][rowId - 1][colId - 1].downStream;
+    for (let i = downStream.length - 1; i >= 0; i--) {
+        evalFormula(downStream[i]);
+    }
+
+}
+
 
