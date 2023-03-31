@@ -20,6 +20,7 @@ for (let i = 1; i <= 100; i++) {
     $("#rows").append(`<div class="row-name">${i}</div>`);
 }
 
+
 let cellData = {
     "Sheet1": []
 };
@@ -74,8 +75,7 @@ $(".input-cell").blur(function (e) {
     cellData[selectedSheet][rowId - 1][colId - 1].formula = "";
     updateCellData("text", $(this).text());
     let selfColCode = $(`.column-${colId}`).attr("id");
-    evalFormula(selfColCode + rowId);
-    
+    evalFormula(selfColCode + rowId); 
 });
 
 function getRowCol(ele) {
@@ -93,7 +93,6 @@ function getTopLeftBottomRightCell(rowId, colId) {
     let rightCell = $(`#row-${rowId}-col-${colId + 1}`);
     return [topCell, bottomCell, leftCell, rightCell];
 }
-
 $(".input-cell").click(function(e){
     let [rowId, colId] = getRowCol(this);
     let [topCell, bottomCell, leftCell, rightCell] = getTopLeftBottomRightCell(rowId, colId);
@@ -124,10 +123,12 @@ function unselectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
 
         $(ele).removeClass("selected top-selected bottom-selected left-selected right-selected")
     }
+
 };
 
 function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
     if (e.ctrlKey) {
+
         //top selected or not
         let topSelected;
         if (topCell) {
@@ -139,6 +140,7 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
         if (bottomCell) {
             bottomSelected = bottomCell.hasClass("selected");
         }
+
 
         //left selected or not
         let leftSelected;
@@ -171,13 +173,13 @@ function selectCell(ele, e, topCell, bottomCell, leftCell, rightCell) {
             $(ele).addClass("left-selected");
             leftCell.addClass("right-selected");
         }
-
     } else {
         $(".input-cell.selected").removeClass("selected top-selected bottom-selected left-selected right-selected");
     }
     $(ele).addClass("selected");
     changeHeader(getRowCol(ele));
 };
+
 
 function changeHeader([rowId, colId]) {
     let data;
@@ -196,6 +198,7 @@ function changeHeader([rowId, colId]) {
     $("#font-family").val(data["font-family"]);
     $("#font-size").val(data["font-size"]);
     $("#font-family").css("font-family", data["font-family"]);
+    $("#formula-input").text(data.formula);
 }
 
 function addRemoveSelectFromFontStyle(data, property){
@@ -205,7 +208,6 @@ function addRemoveSelectFromFontStyle(data, property){
         $(`#${property}`).removeClass("selected");
     }
 }
-
 //mouse move select multiple cells
 let count = 0;
 let startcellSelected = false;
@@ -350,30 +352,36 @@ $(".pick-color").colorPick({
             if($(this.element.children()[1]).attr("id") == "fill-color"){
                 $(".input-cell.selected").css("background-color", this.color);
                 $("#fill-color").css("border-bottom",`4px solid ${this.color}`);
+                // $(".input-cell.selected").each((index, data) => {
+                //     let [rowId, colId] = getRowCol(data);
+                //     cellData[rowId - 1][colId - 1].bgcolor = this.color;
+                // });
                 updateCellData("bgcolor", this.color);
             }
             if($(this.element.children()[1]).attr("id") == "text-color"){
                 $(".input-cell.selected").css("color",this.color);
                 $("#text-color").css("border-bottom", `4px solid ${this.color}`);
+                // $(".input-cell.selected").each((index, data) => {
+                //     let [rowId, colId] = getRowCol(data);
+                //     cellData[rowId - 1][colId - 1].color = this.color;
+                // });
                 updateCellData("color", this.color);
             }
         }
-    //   this.element.css({'backgroundColor': this.color, 'color': this.color});
     }
-  });
+});
 
 $("#fill-color").click(function(e){
     setTimeout(()=>{
         $(this).parent().click();
     }, 10)
-    
 })
 
 $("#text-color").click(function(e){
     setTimeout(() => {
         $(this).parent().click();
     }, 10)
-})
+});
 
 $(".menu-selector").change(function(e){
     let value = $(this).val();
@@ -381,13 +389,17 @@ $(".menu-selector").change(function(e){
     if(key == "font-family"){
         $("#font-family").css(key, value);
     }
-    if(!NaN(value)){
+    if(!isNaN(value)){
         value = parseInt(value);
     }
 
     $("input-cell.selected").css(key, value);
+    // $(".input-cell.selected").each((index, data) => {
+    //     let [rowId, colId] = getRowCol(data);
+    //     cellData[rowId - 1][colId - 1][key] = value;
+    // })
     updateCellData(key, value);
-})
+});
 
 function updateCellData(property, value){
     let currCellData = JSON.stringify(cellData);
@@ -580,7 +592,6 @@ function loadCurrentSheet(){
 }
 
 function renameSheet(){
-    
     let newSheetName = $(".sheet-modal-input").val();
     if(newSheetName && !Object.keys(cellData).includes(newSheetName)){
         save = false;
@@ -667,7 +678,7 @@ $("#menu-file").click(function(e){
     
         setTimeout(() => {
             fileModal.remove();
-        }, 300);
+        }, 250);
     });
     $(".new").click(function(e){
         if(save){
@@ -687,7 +698,6 @@ $("#menu-file").click(function(e){
                                             </div>
                                         </div>
                                     </div>`);
-            
             $(".no-button").click(function(e){
                 $(".sheet-modal-parent").remove();
                 newFile();
@@ -716,6 +726,7 @@ function newFile(){
     $(".sheet-tab-container").append(`<div class="sheet-tab selected">Sheet1</div>`);
     addSheetEvents();
     selectedSheet = "Sheet1";
+    totalSheets = 1;
     lastlyAddedSheet = 1;
     $(".title").text("Excel - Book");
     $("#row-1-col-1").click();
@@ -774,7 +785,7 @@ function openFile(){
             for(let i of sheets){
                 if(i.includes("Sheet")){
                     let splittedSheetArray = i.split("Sheet");
-                    if(splittedSheetArray.length == 2 && !NaN(splittedSheetArray[1])){
+                    if(splittedSheetArray.length == 2 && !isNaN(splittedSheetArray[1])){
                         lastlyAddedSheet = parseInt(splittedSheetArray[1]);
                     }
                 }
@@ -858,22 +869,32 @@ $("#formula-input").blur(function(e) {
             if(i.length >=2) {
                 i = i.replace("(","");
                 i = i.replace(")","");
-                elements.push(i);
+                if(!elements.includes(i)){
+                    elements.push(i);
+                }
             }
         }
-        console.log(elements);
+        $(".input-cell.selected").each(function(index, data){
+            if(updateStreams(data, elements, false)){
+                let [rowId, colId] = getRowCol(data);
+                cellData[selectedSheet][rowId-1][colId-1].formula = formula;
+                let selfColCode = $(`.column-${colId}`).attr("id");
+                evalFormula(selfColCode + rowId);
+            }else{
+                alert("Formula is not valid");
+            }
+        })
     } else {
         alert("Please select a cell first!");
     }
-})
+});
 
-function updateStreams(ele, elements){
+function updateStreams(ele, elements, update, oldUpstream){
     let [rowId, colId] = getRowCol(ele);
     let selfColCode = $(`.column-${colId}`).attr("id");
     if(elements.includes(selfColCode + rowId)){
         return false;
     }
-
     if(cellData[selectedSheet][rowId-1] && cellData[selectedSheet][rowId-1][colId-1]){
         let downStream = cellData[selectedSheet][rowId-1][colId-1].downStream;
         let upStream = cellData[selectedSheet][rowId-1][colId-1].upstream;
@@ -881,6 +902,10 @@ function updateStreams(ele, elements){
             if(elements.includes(i)){
                 return false;
             }
+        }
+        for(let i of downStream){
+            let [calRowId, calColId] = codeToValue(i);
+            console.log(updateStreams($(`#row-${calRowId}-col-${calColId}`)[0], elements, true, upStream));
         }
     }
 
@@ -908,6 +933,18 @@ function updateStreams(ele, elements){
             for(let i of elements){
                 cellData[selectedSheet][rowId-1][colId-1].upStream.push(i);
             }
+        }else{
+            for(let i of upStream){
+                let [calRowId, calColId] =codeToValue(i);
+                let index = cellData[selectedSheet][calRowId-1][calColId-1].downStream.indexOf(selfColCode + rowId);
+                cellData[selectedSheet][calRowId-1][calColId-1].downStream.splice(index, 1);
+                if(JSON.stringify(cellData[selectedSheet][calRowId-1][calColId-1]) == JSON.stringify(defaultProperties)){
+                    delete cellData[selectedSheet][calRowId-1][calColId-1];
+                    if(Objects.keys(cellData[selectedSheet][calRowId-1]).length == 0){
+                        delete cellData[selectedSheet][calRowId-1];
+                    }
+                }
+            }
         }
         cellData[selectedSheet][rowId - 1][colId - 1].upstream = [...elements];
     }
@@ -916,7 +953,7 @@ function updateStreams(ele, elements){
         let [calRowId, calColId] = codeToValue(i);
         if(!cellData[selectedSheet][calRowId - 1]){
             cellData[selectedSheet][calRowId-1] = {};
-            cellData[selectedSheet][calRowId-1][calColId-1] = {defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
+            cellData[selectedSheet][calRowId-1][calColId-1] = {...defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
         }else if(!cellData[selectedSheet][calRowId-1][calColId-1]){
             cellData[selectedSheet][calRowId-1][calColId-1] = {...defaultProperties, "upStream": [], "downStream": [selfColCode + rowId]};
         }else{
@@ -971,6 +1008,6 @@ function evalFormula(cell) {
 }
 
 //project completed 
-// console.log(this);
+
 
 
