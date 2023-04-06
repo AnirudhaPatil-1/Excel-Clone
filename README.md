@@ -1,5 +1,5 @@
-\# Excel-Clone
-(Mar 2023 - Mar 2023)
+# Excel Clone
+(March 2023 - March 2023)
 
 Hosted link: https://anirudhapatil-1.github.io/Excel-Clone/
 
