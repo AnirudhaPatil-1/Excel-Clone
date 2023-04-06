@@ -56,5 +56,5 @@ There are 4 Functions implemented as of now and They are
 
 Feature 8 Sheet creation: You can add more sheets by clicking Add Sheets Button In the Bottom Left Corner.
 
-Overall, the Excel Clone project provides users with a user-friendly interface for creating and managing spreadsheets. The project code is available on GitHub.
+Overall, the Excel Clone project provides users with a user-friendly interface for creating and managing spreadsheets. The project code is available on GitHub..
 
