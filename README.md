@@ -44,3 +44,6 @@ Add more sheets by clicking the "Add Sheets" button in the bottom left corner.
 
 Overall, the Excel Clone project provides users with a user-friendly interface for creating and managing spreadsheets. The project code is available on GitHub.
 
+## Contributing
+
+Contributions are welcome! If you have any ideas, suggestions, or improvements, feel free to open an issue or submit a pull request.
