@@ -5,6 +5,8 @@ Hosted link: [Excel Clone](https://anirudhapatil-1.github.io/Excel-Clone/)
 
 GitHub Link: [GitHub Repository](https://tinyurl.com/excel-clone)
 
+![Excel clone](https://github.com/AnirudhaPatil-1/Excel-Clone/assets/73242321/b3303b0e-2c60-4ac0-b80d-ba984187fff2)
+
 Tech Stack: JavaScript, HTML and CSS
 
 ## Project Details
